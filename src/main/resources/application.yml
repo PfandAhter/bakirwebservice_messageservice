@@ -1,0 +1,34 @@
+server:
+  port: 8091
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/message_service
+    username: springstudent
+    password: springstudent
+  jpa:
+    properties:
+      javax:
+        persistence:
+          validation:
+            mode: none
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+  main:
+    #    web-application-type: none
+    banner-mode: off
+  application:
+    name: message-service
+
+client:
+  feign:
+    token-service:
+      path: http://localhost:8079/token
+      extractUsername: /extract/username
+      generateToken: /generate/token
+      logoutUser: /logout
+
+    microServiceRegister-service:
+      path: http://localhost:8090/registerservice
+      ready: /ready
+      stopped: /stopped
