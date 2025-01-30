@@ -24,19 +24,18 @@ import java.time.Instant;
 public class MicroServiceRegister {
     private final MicroServiceRegisterClient microServiceRegisterClient;
 
-    private String microServiceCode;
+    private static final String microServiceCode = "MSc371ea389ce74caea1d595d5d3de2f53";
 
     private static final String microServiceName = "MESSAGE-SERVICE";
 
     @EventListener(ApplicationReadyEvent.class)
     public void logToDataBaseServiceReady(){
-        microServiceCode = Util.generateCode();
         MicroServiceReadyRequest microServiceReadyRequest = new MicroServiceReadyRequest();
-        microServiceReadyRequest.setMicroServiceCode(microServiceCode);
-        microServiceReadyRequest.setMicroServiceStatus("UP");
-        microServiceReadyRequest.setMicroServiceErrorCode("91000");
-        microServiceReadyRequest.setMicroServiceReadyDate(Timestamp.from(Instant.now()));
-        microServiceReadyRequest.setMicroServiceName(microServiceName);
+        microServiceReadyRequest.setServiceCode(microServiceCode);
+        microServiceReadyRequest.setServiceStatus("UP");
+        microServiceReadyRequest.setErrorCode("91000");
+        microServiceReadyRequest.setServiceReadyDate(Timestamp.from(Instant.now()));
+        microServiceReadyRequest.setServiceName(microServiceName);
 
         microServiceRegisterClient.microServiceReady(microServiceReadyRequest);
     }
@@ -44,11 +43,11 @@ public class MicroServiceRegister {
     @PreDestroy
     public void testLogToDatabaseStopped(){
         MicroServiceStoppedRequest microServiceStoppedRequest = new MicroServiceStoppedRequest();
-        microServiceStoppedRequest.setMicroServiceStoppedDate(Timestamp.from(Instant.now()));
-        microServiceStoppedRequest.setMicroServiceName(microServiceName);
-        microServiceStoppedRequest.setMicroServiceErrorCode("91000");
-        microServiceStoppedRequest.setMicroServiceStatus("DOWN");
-        microServiceStoppedRequest.setMicroServiceCode(microServiceCode);
+        microServiceStoppedRequest.setServiceStoppedDate(Timestamp.from(Instant.now()));
+        microServiceStoppedRequest.setServiceName(microServiceName);
+        microServiceStoppedRequest.setErrorCode("91000");
+        microServiceStoppedRequest.setServiceStatus("DOWN");
+        microServiceStoppedRequest.setServiceCode(microServiceCode);
 
         microServiceRegisterClient.microServiceStopped(microServiceStoppedRequest);
     }
